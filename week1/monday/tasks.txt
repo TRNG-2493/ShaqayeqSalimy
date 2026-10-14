@@ -1,0 +1,4 @@
+1. Review Python input and output.
+2. Practise Git commands.
+3. Complete the number-guessing exercise.
+4. Review loops and conditional statements.
