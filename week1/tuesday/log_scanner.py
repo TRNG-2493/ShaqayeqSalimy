@@ -53,6 +53,23 @@ for raw_line in log_text.splitlines():
 
     lines_scanned += 1
 
+    if "| ERROR |" in line:
+        error_count += 1
+
+        if first_error_line == 0:
+            first_error_line = line_number
+
+        print(f"ERROR on line {line_number}: {line}")
+
+    elif "| WARN |" in line:
+        warn_count += 1
+
+    elif "| INFO |" in line:
+        info_count += 1
+
+    else:
+        unknown_count += 1
+
 # ---- TODO 3: the verdict -------------------------------------------------------
 # verdict = "PASS" if error_count is 0, otherwise "FAIL"  (if / else)
 
