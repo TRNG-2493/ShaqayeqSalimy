@@ -32,6 +32,10 @@ print(f"Guess the number between {MIN_NUMBER} and {MAX_NUMBER}. "
 # ---- TODO 1: the game loop ---------------------------------------------------
 while True:
     answer = input("Guess (1-100): ").strip()
+    if answer.lower() == "q":
+        print(f"You quit. The number was {SECRET_NUMBER}.")
+        result = "QUIT"
+        break
 
     if not answer.isdigit():
         print("Invalid input: please type a whole number.")
@@ -52,6 +56,11 @@ while True:
     else:
         print(f"Correct! You needed {attempts} attempts.")
         result = "WIN"
+        break
+    
+    if attempts >= MAX_ATTEMPTS:
+        print(f"Out of attempts! The number was {SECRET_NUMBER}.")
+        result = "LOSE"
         break
 
 # ---- Final line (provided; the checker reads this) --------------------------
