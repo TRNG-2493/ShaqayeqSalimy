@@ -34,14 +34,10 @@ print(f"Title: {test_title}")
 # ---------------------------------------------------------------------------
 # PART 3 - Summary: failures, pass rate, release decision
 # ---------------------------------------------------------------------------
-# TODO 3a: failed_tests = total_tests - passed_tests
-#
-# TODO 3b: pass_rate = passed_tests / total_tests * 100, rounded to 1 decimal
-#
-# TODO 3c: release_ready = True when pass_rate is 90 or more, else False
-#          (use a comparison operator, no if statement needed)
-#
-# TODO 3d: print these three lines exactly (values change, wording does not):
-#              Failed: 6
-#              Pass rate: 85.0%
-#              Release ready: False
+failed_tests = total_tests - passed_tests
+pass_rate = round(passed_tests / total_tests * 100, 1)
+release_ready = pass_rate >= 90
+
+print(f"Failed: {failed_tests}")
+print(f"Pass rate: {pass_rate:.1f}%")
+print(f"Release ready: {release_ready}")
