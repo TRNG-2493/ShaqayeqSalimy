@@ -25,12 +25,10 @@ passed_tests = int(input("Tests passed: "))
 # ---------------------------------------------------------------------------
 # PART 2 - Build and print the test-case ID (f-string)
 # ---------------------------------------------------------------------------
-# TODO 2a: build test_id = prefix + "-" + number padded with zeros to 4 digits.
-#          Example: "login" and 42 -> LOGIN-0042
-#
-# TODO 2b: print  Generated ID: LOGIN-0042   (with your own test_id)
-#
-# TODO 2c: print  Title: Valid login        (with your own test_title)
+test_id = f"{module_prefix}-{test_number:04d}"
+
+print(f"Generated ID: {test_id}")
+print(f"Title: {test_title}")
 
 
 # ---------------------------------------------------------------------------
