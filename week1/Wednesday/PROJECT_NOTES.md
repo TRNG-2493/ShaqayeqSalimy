@@ -4,7 +4,7 @@ Status: done
 
 ## How to run
 
-TODO
+Run: python3 manager.py
 
 ## Your name
 Shaqayeq Salimy
