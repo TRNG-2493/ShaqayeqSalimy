@@ -1,0 +1,120 @@
+"""Test-Data Manager (starter) - Day 3 exercise.
+
+Work through the parts in README.md, top to bottom.
+Replace every `None` / empty placeholder marked TODO with your own code.
+No functions are needed: write plain statements (variables, loops, if).
+Run it:            python3 manager.py
+Check your work:   python3 check_exercise.py
+"""
+from collections import Counter, defaultdict
+
+# ---------------------------------------------------------------------------
+# SAMPLE DATA - an export from a test-management tool. Do NOT edit this list.
+# It contains duplicate IDs (TC-102, TC-104, TC-106) and one record
+# with no "status" key (TC-110).
+# ---------------------------------------------------------------------------
+RAW_TEST_CASES = [
+    {"id": "TC-101", "module": "login",    "priority": "High",   "status": "pass"},
+    {"id": "TC-102", "module": "login",    "priority": "High",   "status": "fail"},
+    {"id": "TC-103", "module": "login",    "priority": "Medium", "status": "pass"},
+    {"id": "TC-104", "module": "search",   "priority": "Medium", "status": "pass"},
+    {"id": "TC-102", "module": "login",    "priority": "High",   "status": "fail"},  # exact duplicate
+    {"id": "TC-105", "module": "search",   "priority": "Low",    "status": "skip"},
+    {"id": "TC-106", "module": "checkout", "priority": "High",   "status": "fail"},
+    {"id": "TC-107", "module": "checkout", "priority": "High",   "status": "pass"},
+    {"id": "TC-104", "module": "search",   "priority": "Medium", "status": "pass"},  # exact duplicate
+    {"id": "TC-108", "module": "checkout", "priority": "Medium", "status": "skip"},
+    {"id": "TC-109", "module": "profile",  "priority": "Low",    "status": "pass"},
+    {"id": "TC-106", "module": "checkout", "priority": "High",   "status": "pass"},  # re-run, DIFFERENT status
+    {"id": "TC-110", "module": "profile",  "priority": "Low"},                       # no status yet
+    {"id": "TC-111", "module": "search",   "priority": "High",   "status": "fail"},
+]
+
+# Test cases the team PLANNED to run this sprint (a set of IDs).
+PLANNED_IDS = {"TC-101", "TC-102", "TC-103", "TC-104", "TC-105", "TC-106",
+               "TC-107", "TC-108", "TC-109", "TC-110", "TC-111", "TC-112"}
+
+# ===========================================================================
+# PART 1 - Look at the raw data (slicing)
+# ===========================================================================
+
+
+raw_ids = []
+for case in RAW_TEST_CASES:
+    raw_ids.append(case["id"])
+
+# Preview sections of the ID list.
+first_three_ids = raw_ids[:3]
+last_two_ids = raw_ids[-2:]
+every_other_id = raw_ids[::2]
+
+print("Raw records :", len(RAW_TEST_CASES))
+print("First three :", first_three_ids)
+print("Last two    :", last_two_ids)
+
+
+# ===========================================================================
+# PART 2 - Remove duplicates (list + set)
+# Rule: keep the FIRST record for each ID, keep the original order.
+# ===========================================================================
+seen_ids = set()
+unique_cases = []
+# TODO 2: for each case in RAW_TEST_CASES, if its id is not in seen_ids,
+#         add the id to seen_ids and append the case to unique_cases.
+
+for case in RAW_TEST_CASES:
+    if case["id"] not in seen_ids:
+        seen_ids.add(case["id"])
+        unique_cases.append(case)
+
+
+print("Unique cases:", unique_cases)
+print("Unique count:", len(unique_cases))
+
+# ===========================================================================
+# PART 3 - Group by module (defaultdict)
+# Result shape: {"login": ["TC-101", "TC-102", ...], "search": [...], ...}
+# ===========================================================================
+ids_by_module = defaultdict(list)
+
+for case in unique_cases:
+    ids_by_module[case["module"]].append(case["id"])
+
+print("By module   :", ids_by_module)
+
+# ===========================================================================
+# PART 4 - Lookup by ID (dict)
+# ===========================================================================
+# Map each test ID to its complete record.
+lookup = {}
+for case in unique_cases:
+    lookup[case["id"]] = case
+
+found_case = lookup.get("TC-107")
+missing_case = lookup.get("TC-999", "not found")
+
+print("TC-107      :", found_case)
+print("TC-999      :", missing_case)
+
+# ===========================================================================
+# PART 5 - Counts by status (Counter) and planned-vs-executed (sets)
+# ===========================================================================
+
+status_counts = Counter()
+
+for case in unique_cases:
+    status = case.get("status", "unknown")
+    status_counts[status] += 1
+
+# Collect IDs of tests that have a status.
+executed_ids = set()
+
+for case in unique_cases:
+    if "status" in case:
+        executed_ids.add(case["id"])
+
+# Find planned IDs that are missing from the executed set.
+not_run_ids = sorted(PLANNED_IDS - executed_ids)
+
+print("By status   :", status_counts)
+print("Not run     :", not_run_ids)
