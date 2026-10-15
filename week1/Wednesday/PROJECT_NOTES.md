@@ -10,4 +10,3 @@ Run: python3 manager.py
 Shaqayeq Salimy
 
 
-TODO
