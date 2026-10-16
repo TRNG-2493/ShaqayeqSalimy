@@ -15,6 +15,6 @@ output of git shortlog -sne:
 6  Shaqayeq6 <shaqayeq.salimy@gmail.com>
 
 
-My Name: Shaqayeq Salimy
+My Name: Shaqayeq Salimy, 
 Teammate Name: Vennela
 
