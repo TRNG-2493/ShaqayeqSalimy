@@ -151,58 +151,99 @@ class TestResult:
             f"{type(self).__name__}"
             f"({self.test_id!r}, {self.status!r}, {self.duration!r})"
         )
-
 class Suite:
     """A named collection of TestResult objects (has-a, not is-a list)."""
 
     def __init__(self, name):
         # TODO 2.1: name must be non-empty text after strip() (else ValueError);
         #           store the stripped name in self.name
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("Suite name must be non-empty text")
+
+        self.name = name.strip()
+
         # TODO 2.2: create the per-object list self._results here (NOT in the class body)
-        raise NotImplementedError("TODO 2.1-2.2: Suite.__init__")
+        self._results = []
 
     @classmethod
     def from_rows(cls, name, rows):
         # TODO 2.3: build a suite and add TestResult.from_dict(row) for every row
-        raise NotImplementedError("TODO 2.3: from_rows")
+        suite = cls(name)
+
+        for row in rows:
+            suite.add(TestResult.from_dict(row))
+
+        return suite
 
     def add(self, result):
         # TODO 2.4: not a TestResult -> TypeError; a test_id already in the suite
         #           -> ValueError (mention the id); otherwise append
-        raise NotImplementedError("TODO 2.4: add")
+        if not isinstance(result, TestResult):
+            raise TypeError("Result must be a TestResult")
+
+        for existing in self._results:
+            if existing.test_id == result.test_id:
+                raise ValueError(f"Duplicate test_id: {result.test_id}")
+
+        self._results.append(result)
 
     @property
     def results(self):
         # TODO 2.5: return a COPY of the internal list
-        raise NotImplementedError("TODO 2.5: results")
+        return self._results.copy()
 
     def count(self):
         # TODO 2.5: number of results
-        raise NotImplementedError("TODO 2.5: count")
+        return len(self._results)
 
     @property
     def pass_rate(self):
         # TODO 2.6: percent (0-100) of results whose status is PASS, out of ALL
         #           results (SKIPPED counts in the total). Empty suite -> 0.0
-        raise NotImplementedError("TODO 2.6: pass_rate")
+        if self.count() == 0:
+            return 0.0
+
+        passed = 0
+
+        for result in self._results:
+            if result.is_passed:
+                passed += 1
+
+        return passed / self.count() * 100
 
     @property
     def total_duration(self):
         # TODO 2.7: sum of all durations
-        raise NotImplementedError("TODO 2.7: total_duration")
+        return sum(result.duration for result in self._results)
 
     def counts_by_status(self):
         # TODO 2.7: dict with EVERY valid status as a key, e.g.
         #           {"PASS": 2, "FAIL": 1, "SKIPPED": 1, "ERROR": 0}
-        raise NotImplementedError("TODO 2.7: counts_by_status")
+        counts = {}
+
+        for status in TestResult.VALID_STATUSES:
+            counts[status] = 0
+
+        for result in self._results:
+            counts[result.status] += 1
+
+        return counts
 
     def failures(self):
         # TODO 2.8: list of results whose status is FAIL or ERROR (suite order)
-        raise NotImplementedError("TODO 2.8: failures")
+        return [
+            result
+            for result in self._results
+            if result.status in ("FAIL", "ERROR")
+        ]
 
     def slowest(self, n=1):
         # TODO 2.8: the n slowest results, slowest first (sorted with a key)
-        raise NotImplementedError("TODO 2.8: slowest")
+        return sorted(
+            self._results,
+            key=lambda result: result.duration,
+            reverse=True,
+        )[:n]
 
 
 class Reporter:
