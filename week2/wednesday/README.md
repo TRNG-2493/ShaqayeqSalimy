@@ -1,6 +1,6 @@
 # Week 2 Wednesday — Debug It, Log It, Test It, Merge It
 
-Individual exercise submission.
+
 
 ## Parts A–D
 Completed code, debugging evidence, unit tests, and merge-conflict notes:
