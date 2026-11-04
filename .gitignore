@@ -5,3 +5,4 @@ venv/
 .env
 *.log
 !sample_app.log
+.pytest_cache/
