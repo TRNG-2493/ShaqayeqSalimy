@@ -6,6 +6,7 @@ from qe_utils import calculate_cart_total
 
 # TODO (Task 3/4): put the markers `regression` on the whole class (class-level marker),
 # then fill in the methods. Each method is a separate test; `self` is the only extra argument.
+@pytest.mark.regression
 class TestCartTotal:
     # ---- WORKED EXAMPLE ----
     @pytest.mark.smoke
@@ -13,6 +14,7 @@ class TestCartTotal:
         assert calculate_cart_total([10.00, 5.50]) == 15.50
 
     # ---- TODO tests ----
+    @pytest.mark.smoke
     def test_total_with_ten_percent_tax(self):
         # TODO: [100.00] with tax_rate=0.10 -> 110.0. Marker: smoke
         # Arrange
@@ -23,7 +25,7 @@ class TestCartTotal:
         # Assert
         assert result == pytest.approx(110.0)
 
-
+    @pytest.mark.boundary
     def test_empty_cart_total_is_zero(self):
         # TODO: [] -> 0. Marker: boundary
         # Arrange

@@ -12,7 +12,7 @@ def test_freezing_point_converts_to_32f():
 
 
 # ---- TODO tests ----
-
+@pytest.mark.regression
 def test_boiling_point_converts_to_212f():
     # TODO (Task 3): 100 C -> 212 F. Marker: regression
     # Arrange
@@ -22,7 +22,7 @@ def test_boiling_point_converts_to_212f():
     # Assert
     assert result == 212
 
-
+@pytest.mark.regression
 def test_body_temperature_uses_approx():
     # TODO (Task 4): 37 C is 98.6 F. Compare with pytest.approx, NOT ==. Marker: regression
     # Arrange
@@ -33,7 +33,7 @@ def test_body_temperature_uses_approx():
     assert result == pytest.approx(98.6)
 
     
-
+@pytest.mark.boundary
 def test_minus_40_is_same_in_both_scales():
     # TODO (Task 3): celsius_to_fahrenheit(-40) == -40. Marker: boundary
      # Arrange
@@ -43,7 +43,8 @@ def test_minus_40_is_same_in_both_scales():
     # Assert
     assert result == -40
 
-
+@pytest.mark.boundary
+@pytest.mark.smoke
 def test_grade_90_is_a():
     # TODO (Task 3): boundary 90 -> "A". Markers: boundary, smoke
      # Arrange
@@ -53,7 +54,7 @@ def test_grade_90_is_a():
     # Assert
     assert result == "A"
 
-
+@pytest.mark.boundary
 def test_grade_89_is_b():
     # TODO (Task 3): just below 90 -> "B". Marker: boundary
     score = 89
@@ -64,7 +65,7 @@ def test_grade_89_is_b():
 
     
 
-
+@pytest.mark.boundary
 def test_grade_0_is_f_and_100_is_a():
     # TODO (Task 3): the two extreme valid scores. Marker: boundary
     lowest_score = 0
@@ -78,7 +79,7 @@ def test_grade_0_is_f_and_100_is_a():
 
    
 
-
+@pytest.mark.regression
 def test_grade_below_zero_raises_value_error():
     # TODO (Task 4): -1 -> ValueError (check message with match=). Marker: regression
      # Arrange
@@ -89,7 +90,7 @@ def test_grade_below_zero_raises_value_error():
 
 
 
-
+@pytest.mark.regression
 def test_grade_above_100_raises_value_error():
     # TODO (Task 4): 101 -> ValueError. Marker: regression
     score = 101
